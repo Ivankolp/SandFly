@@ -120,7 +120,7 @@
 
     <com.google.android.accessibility.material.preference.AccessibilitySuitePreference
         android:fragment="com.google.android.accessibility.talkback.preference.base.BrailleFragment"
-        android:key="@string/pref_braille_key"
+        android:key="pref_braille_screen"
         android:title="@string/title_pref_braille"
         android:summary="Дисплеи Брайля и Брайлевская клавиатура" />
   </PreferenceCategory>
