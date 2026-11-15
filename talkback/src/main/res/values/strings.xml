@@ -5304,4 +5304,6 @@
     <item quantity="one">Copied <xliff:g id="count" example="1">%1$d</xliff:g> item</item>
     <item quantity="other">Copied <xliff:g id="count" example="5">%1$d</xliff:g> items</item>
   </plurals>
+  <string name="title_pref_category_tools">Smart tools</string>
+  <string name="title_pref_category_system">System and profiles</string>
 </resources>

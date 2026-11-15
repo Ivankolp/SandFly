@@ -107,14 +107,14 @@ public class AccessibilityEventProcessor implements DisplayStateChangedListener 
    * The minimum delay between window state change and automatic events. Note that this delay
    * doesn't affect response to user actions, so it is OK if it is a tad long.
    */
-  public static final long DELAY_AUTO_AFTER_STATE = 200;
+  public static final long DELAY_AUTO_AFTER_STATE = 20;
 
   /**
    * The minimum delay after a focus event that a selected event can be processed on the same branch
    * of the accessibility node tree. Note that this delay doesn't affect response to user actions,
    * so it is OK if it is a tad long.
    */
-  public static final long DELAY_SELECTED_AFTER_FOCUS = 200;
+  public static final long DELAY_SELECTED_AFTER_FOCUS = 20;
 
   /**
    * How long after a selected event the same one again is dropped. Some apps send the same

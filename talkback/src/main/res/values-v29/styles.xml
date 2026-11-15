@@ -1,20 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!--
-     Copyright (C) 2019 The Android Open Source Project
-
-     Licensed under the Apache License, Version 2.0 (the "License");
-     you may not use this file except in compliance with the License.
-     You may obtain a copy of the License at
-
-          http://www.apache.org/licenses/LICENSE-2.0
-
-     Unless required by applicable law or agreed to in writing, software
-     distributed under the License is distributed on an "AS IS" BASIS,
-     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-     See the License for the specific language governing permissions and
-     limitations under the License.
--->
-
 <resources>
 
   <!--The basic theme for service-->
@@ -25,19 +9,24 @@
     <item name="selector_icon_stroke_color">@color/quick_menu_overlay_finger_swipe_icon_stroke_color</item>
   </style>
 
-  <!--The theme is for preference settings-->
+  <!--The theme is for preference settings - AMOLED PURE BLACK-->
   <style name="TalkBackSettings" parent="Theme.MaterialComponents.DayNight.Bridge" >
-    <item name="colorAccent">@color/colorAccent</item>
+    <item name="colorAccent">#00E5FF</item>
     <item name="actionBarTheme">@style/SettingsActionBar</item>
+    <item name="android:windowBackground">#000000</item>
+    <item name="android:colorBackground">#000000</item>
+    <item name="android:textColorPrimary">#FFFFFF</item>
+    <item name="android:textColorSecondary">#B0BEC5</item>
   </style>
 
   <style name="SettingsActionBar" parent="@style/ThemeOverlay.AppCompat.ActionBar">
-    <item name="android:textColorPrimary">@color/actionBarTextColorPrimary</item>
-    <item name="android:background">@color/settings_bg_color</item>
+    <item name="android:textColorPrimary">#FFFFFF</item>
+    <item name="android:background">#000000</item>
   </style>
 
   <style name="DialogStyle" parent="Theme.AppCompat.DayNight.Dialog">
     <item name="android:windowNoTitle">true</item>
+    <item name="android:windowBackground">#121212</item>
   </style>
 
 </resources>
