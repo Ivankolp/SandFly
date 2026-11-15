@@ -115,7 +115,7 @@
     <!-- Switch: SandFly runs the commands that need Shizuku through su (Magisk, KernelSU, APatch) instead. [CHAR LIMIT=60] -->
     <string name="title_pref_use_root">Use root instead of Shizuku</string>
     <!-- Audio output setting: which volume control, such as Accessibility volume or Media volume, sets how loud speech is. [CHAR LIMIT=60] -->
-    <string name="title_pref_speech_stream_control">Volume control for speech</string>
+    <string name="title_pref_speech_stream_control">Audio stream for speech</string>
     <!-- Shown in place of the arrow keys of a command that no arrow keys run. [CHAR LIMIT=40] -->
     <string name="command_no_arrow_keys">No arrow keys</string>
     <!-- Button that assigns arrow keys of arrow key navigation to the command shown. [CHAR LIMIT=40] -->

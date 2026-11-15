@@ -144,8 +144,6 @@
     <string-array name="pref_speech_stream_values" translatable="false">
         <item>accessibility</item>
         <item>media</item>
-        <item>ring</item>
-        <item>call</item>
     </string-array>
     <string name="pref_mute_speech_while_recording_key">pref_mute_speech_while_recording</string>
     <string name="pref_speak_in_phrases_key">pref_speak_in_phrases</string>

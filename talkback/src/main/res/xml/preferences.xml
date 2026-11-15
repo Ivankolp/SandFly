@@ -1,174 +1,34 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
 
-  <PreferenceCategory
-      android:title="@string/speech_category_voice">
+  <com.google.android.accessibility.material.preference.AccessibilitySuitePreference
+      android:fragment="com.google.android.accessibility.talkback.preference.base.TextToSpeechSettingsFragment"
+      android:key="@string/pref_tts_settings_key"
+      android:title="@string/speech_category_voice"
+      android:summary="Синтезатор речи, аудиопоток (мультимедиа/спец.возможности), скорость и языки" />
 
-    <com.google.android.accessibility.material.preference.AccessibilitySuitePreference
-        android:fragment="com.google.android.accessibility.talkback.preference.base.TextToSpeechSettingsFragment"
-        android:key="@string/pref_tts_settings_key"
-        android:title="@string/title_pref_speech"
-        android:summary="Синтезатор речи, скорость, тон и выбор голосов" />
+  <com.google.android.accessibility.material.preference.AccessibilitySuitePreference
+      android:fragment="com.google.android.accessibility.talkback.preference.base.SoundAndVibrationFragment"
+      android:key="@string/pref_sound_and_vibration_key"
+      android:title="@string/title_pref_sound_and_vibration"
+      android:summary="Звуковые темы (VoiceOver iOS 18), тактильный отклик и громкость" />
 
-    <com.google.android.accessibility.material.preference.AccessibilitySuitePreference
-        android:fragment="com.google.android.accessibility.talkback.preference.base.AudioOutputFragment"
-        android:key="pref_audio_output_screen"
-        android:title="@string/title_pref_audio_output"
-        android:summary="Аудиопоток: Мультимедиа или Специальные возможности" />
+  <com.google.android.accessibility.material.preference.AccessibilitySuitePreference
+      android:fragment="com.google.android.accessibility.talkback.preference.base.TalkBackGestureShortcutPreferenceFragment"
+      android:key="@string/pref_category_manage_gestures_key"
+      android:title="@string/title_pref_category_manage_gestures"
+      android:summary="Настройка жестов, скролл без затыков, края экрана и скраб" />
 
-    <com.google.android.accessibility.material.preference.AccessibilitySuitePreference
-        android:fragment="com.google.android.accessibility.talkback.preference.base.VerbosityPrefFragment"
-        android:key="@string/pref_verbosity_key"
-        android:title="@string/pref_verbosity_title"
-        android:summary="Подробность чтения элементов и подсказок" />
-  </PreferenceCategory>
+  <com.google.android.accessibility.material.preference.AccessibilitySuitePreference
+      android:fragment="com.google.android.accessibility.talkback.preference.base.SmartToolsFragment"
+      android:key="pref_smart_tools_screen"
+      android:title="@string/title_pref_category_tools"
+      android:summary="Распознавание картинок, макросы, скрипты, уведомления и Брайль" />
 
-  <PreferenceCategory
-      android:title="@string/title_pref_sound_and_vibration">
-
-    <com.google.android.accessibility.material.preference.AccessibilitySuitePreference
-        android:fragment="com.google.android.accessibility.talkback.preference.base.SoundAndVibrationFragment"
-        android:key="@string/pref_sound_and_vibration_key"
-        android:title="@string/title_pref_sound_and_vibration"
-        android:summary="Звуковые темы (VoiceOver iOS 18), тактильный отклик и громкость" />
-  </PreferenceCategory>
-
-  <PreferenceCategory
-      android:title="@string/title_pref_category_manage_gestures">
-
-    <com.google.android.accessibility.material.preference.AccessibilitySuitePreference
-        android:fragment="com.google.android.accessibility.talkback.preference.base.TalkBackGestureShortcutPreferenceFragment"
-        android:key="@string/pref_category_manage_gestures_key"
-        android:title="@string/title_pref_category_manage_gestures"
-        android:summary="Настройка жестов, скролл без затыков, края экрана и скраб" />
-
-    <com.google.android.accessibility.material.preference.AccessibilitySuitePreference
-        android:fragment="com.google.android.accessibility.talkback.preference.base.TouchActivationFragment"
-        android:key="@string/pref_touch_activation_key"
-        android:title="@string/title_pref_touch"
-        android:summary="Сенсорное исследование и активация касанием" />
-
-    <com.google.android.accessibility.material.preference.AccessibilitySuitePreference
-        android:fragment="com.google.android.accessibility.talkback.preference.base.SelectorMenuFragment"
-        android:key="@string/pref_category_manage_selector_menu_key"
-        android:title="@string/title_pref_category_selector_menu"
-        android:summary="Круговое меню, ротор и контекстные действия" />
-
-    <com.google.android.accessibility.material.preference.AccessibilitySuitePreference
-        android:fragment="com.google.android.accessibility.talkback.commands.CommandsFragment"
-        android:key="pref_commands_screen"
-        android:title="@string/title_pref_commands"
-        android:summary="Список доступных команд" />
-
-    <com.google.android.accessibility.material.preference.AccessibilitySuitePreference
-        android:fragment="com.google.android.accessibility.talkback.preference.base.VolumeKeysFragment"
-        android:key="pref_volume_keys_screen"
-        android:title="@string/title_pref_volume_keys"
-        android:summary="Управление кнопками громкости" />
-
-    <com.google.android.accessibility.material.preference.AccessibilitySuitePreference
-        android:fragment="com.google.android.accessibility.talkback.preference.base.TalkBackKeyboardShortcutPreferenceFragment"
-        android:key="@string/pref_category_manage_keyboard_shortcut_key"
-        android:title="@string/title_pref_manage_keyboard_shortcuts"
-        android:summary="Физическая клавиатура и раскладки" />
-
-    <com.google.android.accessibility.material.preference.AccessibilitySuitePreference
-        android:fragment="com.google.android.accessibility.talkback.typing.TypingFragment"
-        android:key="pref_typing_screen"
-        android:title="@string/title_pref_typing"
-        android:summary="Настройки экранной клавиатуры и набора текста" />
-  </PreferenceCategory>
-
-  <PreferenceCategory
-      android:title="@string/title_pref_category_tools">
-
-    <com.google.android.accessibility.material.preference.AccessibilitySuitePreference
-        android:fragment="com.google.android.accessibility.talkback.dictation.DictationFragment"
-        android:key="pref_dictation_screen"
-        android:title="@string/title_pref_dictation"
-        android:summary="Голосовой ввод с умной пунктуацией и авто-запятыми" />
-
-    <com.google.android.accessibility.material.preference.AccessibilitySuitePreference
-        android:fragment="com.google.android.accessibility.talkback.translation.TranslationFragment"
-        android:key="pref_translation_screen"
-        android:title="@string/translation_title"
-        android:summary="Быстрый оффлайн-перевод текста элементов" />
-
-    <com.google.android.accessibility.material.preference.AccessibilitySuitePreference
-        android:fragment="com.google.android.accessibility.talkback.preference.base.AutomaticDescriptionsFragment"
-        android:key="@string/pref_auto_image_captioning_key"
-        android:title="@string/title_pref_image_and_screen_descriptions"
-        android:summary="Распознавание и описание картинок" />
-
-    <com.google.android.accessibility.material.preference.AccessibilitySuitePreference
-        android:fragment="com.google.android.accessibility.talkback.macros.MacrosFragment"
-        android:key="@string/pref_macros_key"
-        android:title="@string/title_pref_macros"
-        android:summary="Макросы и цепочки действий" />
-
-    <com.google.android.accessibility.material.preference.AccessibilitySuitePreference
-        android:fragment="com.google.android.accessibility.talkback.scripting.ScriptsFragment"
-        android:key="@string/pref_scripts_key"
-        android:title="@string/title_pref_scripts"
-        android:summary="Пользовательские скрипты на Lua" />
-
-    <com.google.android.accessibility.material.preference.AccessibilitySuitePreference
-        android:fragment="com.google.android.accessibility.talkback.notifications.NotificationsFragment"
-        android:key="pref_notifications_screen"
-        android:title="@string/notification_category_title"
-        android:summary="Озвучивание входящих уведомлений" />
-
-    <com.google.android.accessibility.material.preference.AccessibilitySuitePreference
-        android:fragment="com.google.android.accessibility.talkback.preference.base.BrailleFragment"
-        android:key="pref_braille_screen"
-        android:title="@string/title_pref_braille"
-        android:summary="Дисплеи Брайля и Брайлевская клавиатура" />
-  </PreferenceCategory>
-
-  <PreferenceCategory
-      android:title="@string/title_pref_category_system">
-
-    <com.google.android.accessibility.material.preference.AccessibilitySuitePreference
-        android:fragment="com.google.android.accessibility.talkback.preference.base.DisplayFragment"
-        android:key="pref_display_screen"
-        android:title="@string/title_pref_display"
-        android:summary="Рамка фокуса и визуальные эффекты" />
-
-    <com.google.android.accessibility.material.preference.AccessibilitySuitePreference
-        android:fragment="com.google.android.accessibility.talkback.backup.SettingsProfilesFragment"
-        android:key="@string/pref_settings_profiles_key"
-        android:title="@string/title_pref_settings_profiles"
-        android:summary="Профили настроек" />
-
-    <com.google.android.accessibility.material.preference.AccessibilitySuitePreference
-        android:fragment="com.google.android.accessibility.talkback.preference.base.BackupFragment"
-        android:key="pref_backup_screen"
-        android:title="@string/title_pref_backup"
-        android:summary="Экспорт и импорт настроек" />
-
-    <com.google.android.accessibility.material.preference.AccessibilitySuitePreference
-        android:fragment="com.google.android.accessibility.talkback.preference.base.ShizukuRootFragment"
-        android:key="pref_shizuku_root_screen"
-        android:title="@string/title_pref_shizuku_root_screen"
-        android:summary="Интеграция с Shizuku и Root" />
-
-    <com.google.android.accessibility.material.preference.AccessibilitySuitePreference
-        android:fragment="com.google.android.accessibility.talkback.preference.base.UpdatesFragment"
-        android:key="pref_updates_screen"
-        android:title="@string/title_pref_updates"
-        android:summary="Проверка обновлений приложения" />
-
-    <com.google.android.accessibility.material.preference.AccessibilitySuitePreference
-        android:fragment="com.google.android.accessibility.talkback.preference.base.HelpFragment"
-        android:key="pref_help_screen"
-        android:title="@string/title_pref_help_and_feedback"
-        android:summary="Справка и обратная связь" />
-
-    <com.google.android.accessibility.material.preference.AccessibilitySuitePreference
-        android:fragment="com.google.android.accessibility.talkback.preference.base.DeveloperPrefFragment"
-        android:key="@string/pref_category_developer_key"
-        android:title="@string/title_pref_category_developer_settings"
-        android:summary="Расширенные настройки для разработчиков" />
-  </PreferenceCategory>
+  <com.google.android.accessibility.material.preference.AccessibilitySuitePreference
+      android:fragment="com.google.android.accessibility.talkback.preference.base.SystemSettingsFragment"
+      android:key="pref_system_settings_screen"
+      android:title="@string/title_pref_category_system"
+      android:summary="Рамка фокуса, профили, бэкап, Shizuku, обновления и для разработчиков" />
 
 </PreferenceScreen>

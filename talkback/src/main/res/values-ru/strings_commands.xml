@@ -46,7 +46,7 @@
     <string name="title_pref_pause">Приостановка и отключение</string>
     <string name="title_pref_quick_settings_screen">Быстрые настройки</string>
     <string name="title_pref_speech">Речь</string>
-    <string name="title_pref_speech_stream_control">Регулятор громкости речи</string>
+    <string name="title_pref_speech_stream_control">Аудиопоток для озвучки</string>
     <string name="title_pref_touch">Касание</string>
     <string name="title_pref_typing">Ввод текста</string>
     <string name="title_pref_updates">Обновления и установка</string>

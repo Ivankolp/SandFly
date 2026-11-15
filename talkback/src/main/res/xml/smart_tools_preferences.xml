@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
+  <com.google.android.accessibility.material.preference.AccessibilitySuitePreference
+      android:fragment="com.google.android.accessibility.talkback.preference.base.AutomaticDescriptionsFragment"
+      android:key="@string/pref_auto_image_captioning_key"
+      android:title="@string/title_pref_auto_image_captioning"
+      android:summary="Распознавание и описание картинок" />
+
+  <com.google.android.accessibility.material.preference.AccessibilitySuitePreference
+      android:fragment="com.google.android.accessibility.talkback.macros.MacrosFragment"
+      android:key="@string/pref_macros_key"
+      android:title="@string/title_pref_macros"
+      android:summary="Макросы и цепочки действий" />
+
+  <com.google.android.accessibility.material.preference.AccessibilitySuitePreference
+      android:fragment="com.google.android.accessibility.talkback.scripting.ScriptsFragment"
+      android:key="@string/pref_scripts_key"
+      android:title="@string/title_pref_scripts"
+      android:summary="Пользовательские скрипты на Lua" />
+
+  <com.google.android.accessibility.material.preference.AccessibilitySuitePreference
+      android:fragment="com.google.android.accessibility.talkback.notifications.NotificationsFragment"
+      android:key="pref_notifications_screen"
+      android:title="@string/notification_category_title"
+      android:summary="Озвучивание входящих уведомлений" />
+
+  <com.google.android.accessibility.material.preference.AccessibilitySuitePreference
+      android:fragment="com.google.android.accessibility.talkback.preference.base.BrailleFragment"
+      android:key="pref_braille_screen"
+      android:title="@string/title_pref_braille"
+      android:summary="Дисплеи Брайля и Брайлевская клавиатура" />
+
+</PreferenceScreen>
