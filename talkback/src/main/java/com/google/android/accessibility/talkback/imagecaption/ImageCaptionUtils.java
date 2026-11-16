@@ -121,15 +121,15 @@ public class ImageCaptionUtils {
       @Nullable Result ocrTextResult) {
     StringBuilder stringBuilder = new StringBuilder();
     if (!Result.isEmpty(iconLabelResult)) {
-      String icon = iconLabelResult.text();
+      CharSequence icon = iconLabelResult.text();
       if (!TextUtils.isEmpty(icon)) {
-        stringBuilder.append(icon.trim());
+        stringBuilder.append(icon.toString().trim());
       }
     }
     if (!Result.isEmpty(ocrTextResult)) {
-      String ocr = ocrTextResult.text();
-      if (!TextUtils.isEmpty(ocr)) {
-        ocr = ocr.trim();
+      CharSequence ocrSeq = ocrTextResult.text();
+      if (!TextUtils.isEmpty(ocrSeq)) {
+        String ocr = ocrSeq.toString().trim();
         if (stringBuilder.length() > 0) {
           stringBuilder.append(", ");
         }
@@ -137,9 +137,9 @@ public class ImageCaptionUtils {
       }
     }
     if (stringBuilder.length() == 0 && !Result.isEmpty(imageDescriptionResult)) {
-      String desc = imageDescriptionResult.text();
+      CharSequence desc = imageDescriptionResult.text();
       if (!TextUtils.isEmpty(desc)) {
-        stringBuilder.append(desc.trim());
+        stringBuilder.append(desc.toString().trim());
       }
     }
     return stringBuilder.toString();

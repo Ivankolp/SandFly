@@ -375,6 +375,10 @@ public class KeyComboManager
     return keyComboMapper.performKeyComboAction(action, eventId);
   }
 
+  public @Nullable ScreenReview getScreenReview() {
+    return keyComboMapper == null ? null : keyComboMapper.getScreenReview();
+  }
+
   /** Terminates instances to prevent leakage. */
   public void shutdown() {
     if (hardwareKeyboardStatus == HARDKEYBOARDHIDDEN_NO) {
