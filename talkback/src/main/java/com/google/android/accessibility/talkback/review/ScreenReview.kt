@@ -79,6 +79,10 @@ class ScreenReview(
   /** Whether the window changed since [cursor]'s text was read from it. */
   private var stale = true
 
+  /** Last frame dHash and cached OCR layout for delta caching. */
+  private var lastFrameHash: Long = 0L
+  private var cachedReviewText: ReviewText? = null
+
   /** When [cursor]'s text was read from the window, in uptime milliseconds. */
   private var readAt = 0L
 
@@ -115,7 +119,11 @@ class ScreenReview(
       }
       AccessibilityEvent.TYPE_WINDOW_CONTENT_CHANGED,
       AccessibilityEvent.TYPE_WINDOWS_CHANGED,
-      AccessibilityEvent.TYPE_VIEW_SCROLLED -> stale = true
+      AccessibilityEvent.TYPE_VIEW_SCROLLED -> {
+        stale = true
+        lastFrameHash = 0L
+        cachedReviewText = null
+      }
     }
   }
 
@@ -507,6 +515,8 @@ class ScreenReview(
     recognized = false
     cursor = null
     stale = true
+    lastFrameHash = 0L
+    cachedReviewText = null
     isCursorOn = false
     if (announce) {
       speak(service.getString(R.string.recognized_text_closed))
@@ -571,7 +581,41 @@ class ScreenReview(
     )
   }
 
+  private fun computeDHash(bitmap: Bitmap): Long {
+    val small = Bitmap.createScaledBitmap(bitmap, 9, 8, false)
+    var hash = 0L
+    for (y in 0 until 8) {
+      for (x in 0 until 8) {
+        val leftPixel = small.getPixel(x, y)
+        val rightPixel = small.getPixel(x + 1, y)
+        val leftGray = (leftPixel and 0xFF) * 28 + ((leftPixel shr 8) and 0xFF) * 151 + ((leftPixel shr 16) and 0xFF) * 77
+        val rightGray = (rightPixel and 0xFF) * 28 + ((rightPixel shr 8) and 0xFF) * 151 + ((rightPixel shr 16) and 0xFF) * 77
+        if (leftGray > rightGray) {
+          hash = hash or (1L shl (y * 8 + x))
+        }
+      }
+    }
+    small.recycle()
+    return hash
+  }
+
+  private fun hammingDistance(h1: Long, h2: Long): Int {
+    return java.lang.Long.bitCount(h1 xor h2)
+  }
+
   private fun recognize(bitmap: Bitmap) {
+    val frameHash = try { computeDHash(bitmap) } catch (e: Throwable) { 0L }
+    val cached = cachedReviewText
+    if (frameHash != 0L && cached != null && hammingDistance(frameHash, lastFrameHash) <= 2 && !cached.isEmpty) {
+      cursor = ReviewCursor(cached)
+      recognized = true
+      recognizedPackage = service.rootInActiveWindow?.packageName
+      isCursorOn = true
+      speak(cursor!!, Spoken.LINE)
+      bitmap.recycle()
+      return
+    }
+
     val recognizer = recognizer ?: LanguageTextRecognizer(service).also { recognizer = it }
     recognizer
       .process(InputImage.fromBitmap(bitmap, 0))
@@ -581,7 +625,8 @@ class ScreenReview(
             block.lines.flatMap { line ->
               line.elements.mapNotNull { element ->
                 val box = element.boundingBox ?: return@mapNotNull null
-                ReviewItem(element.text, box.left, box.top, box.right, box.bottom)
+                val fixed = com.google.android.accessibility.utils.ocr.CyrillicOcrFixer.fix(element.text)
+                ReviewItem(fixed, box.left, box.top, box.right, box.bottom)
               }
             }
           }
@@ -590,6 +635,8 @@ class ScreenReview(
           speak(service.getString(R.string.recognize_screen_text_none))
           return@addOnSuccessListener
         }
+        lastFrameHash = frameHash
+        cachedReviewText = text
         cursor = ReviewCursor(text)
         recognized = true
         recognizedPackage = service.rootInActiveWindow?.packageName

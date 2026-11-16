@@ -164,6 +164,8 @@ import com.google.android.accessibility.talkback.utils.DebugProperties;
 import com.google.android.accessibility.talkback.utils.FocusIndicatorUtils;
 import com.google.android.accessibility.talkback.utils.GeminiCommandUtils;
 import com.google.android.accessibility.talkback.keyboard.KeyComboManager;
+import com.google.android.accessibility.talkback.keyboard.TalkBackPhysicalKeyboardShortcut;
+import com.google.android.accessibility.talkback.review.ScreenReview;
 import com.google.android.accessibility.talkback.keyboard.NextKeyboard;
 import com.google.android.accessibility.talkback.overview.PreviousApp;
 import com.google.android.accessibility.talkback.overview.RecentAppSteps;
@@ -817,6 +819,14 @@ public class GestureController {
               service, said -> pipeline.returnFeedback(eventId, Feedback.speech(said)));
     } else if (action.equals(service.getString(R.string.shortcut_value_pause_or_resume_feedback))) {
       pipeline.returnFeedback(eventId, Feedback.speech(Feedback.Speech.Action.PAUSE_OR_RESUME));
+    } else if (action.equals(service.getString(R.string.shortcut_value_recognize_screen_text))) {
+      KeyComboManager keyComboManager = service.getKeyComboManager();
+      if (keyComboManager != null && keyComboManager.getKeyComboMapper() != null) {
+        ScreenReview screenReview = keyComboManager.getKeyComboMapper().getScreenReview();
+        if (screenReview != null) {
+          result = screenReview.perform(TalkBackPhysicalKeyboardShortcut.RECOGNIZE_SCREEN_TEXT);
+        }
+      }
     } else if (action.equals(service.getString(R.string.shortcut_value_start_selection_mode))) {
       if (actorState.getDirectionNavigation().isSelectionModeActive()) {
         // Copying mode can be ended with nothing focused, as it goes from window to window.

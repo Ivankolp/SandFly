@@ -529,7 +529,7 @@ public class FeedbackController {
     }
 
     if (soundId != 0) {
-      new EarconsPlayTask(mSoundPool, soundId, leftVolume, rightVolume, rate).execute();
+      mSoundPool.play(soundId, Math.min(1.0f, leftVolume), Math.min(1.0f, rightVolume), 0, 0, rate);
     } else {
       // The sound could not be played from the cache. Start loading the sound into the
       // SoundPool for future use, and play it as soon as it has loaded.
@@ -552,7 +552,7 @@ public class FeedbackController {
           float @Nullable [] play = mPendingPlays.get(sampleId);
           mPendingPlays.remove(sampleId);
           if (play != null && pool == mSoundPool && mAuditoryEnabled && status == 0) {
-            new EarconsPlayTask(pool, sampleId, play[0], play[1], play[2]).execute();
+            pool.play(sampleId, Math.min(1.0f, play[0]), Math.min(1.0f, play[1]), 0, 0, play[2]);
           }
         });
   }

@@ -398,7 +398,7 @@ public class AccessibilityNodeFeedbackUtils {
       LogUtils.v(
           TAG, " getUnlabelledNodeDescription return Unlabelled/nodeRole because no text info");
       return TextUtils.isEmpty(nodeDescription)
-          ? context.getString(R.string.value_unlabelled)
+          ? ""
           : nodeDescription;
     }
     return "";

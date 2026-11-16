@@ -85,7 +85,7 @@ public final class NonTextViewsDescription implements RoleDescription {
         AccessibilityNodeFeedbackUtils.getNodeTextOrLabelOrIdDescription(
             node, context, imageContents, globalVariables);
     if (TextUtils.isEmpty(nodeTextOrLabelOrId)) {
-      return context.getString(R.string.value_unlabelled);
+      return "";
     }
     return "";
   }

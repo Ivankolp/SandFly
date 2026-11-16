@@ -867,6 +867,8 @@ public class GestureShortcutMapping implements GestureShortcutProvider {
     // Basic navigation.
     PERFORM_CLICK(
         R.string.shortcut_value_perform_click_action, R.string.shortcut_perform_click_action),
+    RECOGNIZE_SCREEN_TEXT(
+        R.string.shortcut_value_recognize_screen_text, R.string.shortcut_recognize_screen_text),
     PERFORM_DOUBLE_CLICK(
         R.string.shortcut_value_perform_double_click_action,
         R.string.shortcut_perform_double_click_action),

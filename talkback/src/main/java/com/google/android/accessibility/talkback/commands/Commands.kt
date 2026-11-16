@@ -474,7 +474,12 @@ object Commands {
         keyboard(Key.FOCUS_REVIEW_CURSOR)
         keyboard(Key.REVIEW_CURSOR_ON)
         keyboard(Key.REVIEW_CURSOR_OFF)
-        keyboard(Key.RECOGNIZE_SCREEN_TEXT, available = Build.VERSION.SDK_INT >= Build.VERSION_CODES.R)
+        gesture(
+          R.string.shortcut_value_recognize_screen_text,
+          R.string.shortcut_recognize_screen_text,
+          Key.RECOGNIZE_SCREEN_TEXT,
+          available = Build.VERSION.SDK_INT >= Build.VERSION_CODES.R,
+        )
       }
 
     private fun activation() =

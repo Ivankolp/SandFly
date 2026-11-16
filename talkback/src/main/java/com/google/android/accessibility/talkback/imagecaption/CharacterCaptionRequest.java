@@ -89,7 +89,7 @@ public class CharacterCaptionRequest extends CaptionRequest implements OcrListen
       if (TextUtils.isEmpty(text)) {
         continue;
       }
-      texts.add(text);
+      texts.add(com.google.android.accessibility.utils.ocr.CyrillicOcrFixer.fix(text));
     }
     onCaptionFinish(Result.create(OCR, StringBuilderUtils.getAggregateText(texts)));
   }

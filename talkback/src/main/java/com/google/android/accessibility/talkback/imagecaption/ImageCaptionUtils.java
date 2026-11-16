@@ -120,20 +120,29 @@ public class ImageCaptionUtils {
       @Nullable Result iconLabelResult,
       @Nullable Result ocrTextResult) {
     StringBuilder stringBuilder = new StringBuilder();
-    // Order: Icon -> Image -> Text (OCR).
     if (!Result.isEmpty(iconLabelResult)) {
-      stringBuilder.append(context.getString(R.string.detected_icon_label, iconLabelResult.text()));
-    }
-    if (!Result.isEmpty(imageDescriptionResult)) {
-      stringBuilder.append(constructImageDescriptionText(context, imageDescriptionResult));
+      String icon = iconLabelResult.text();
+      if (!TextUtils.isEmpty(icon)) {
+        stringBuilder.append(icon.trim());
+      }
     }
     if (!Result.isEmpty(ocrTextResult)) {
-      stringBuilder.append(
-          context.getString(R.string.detected_recognized_text, ocrTextResult.text()));
+      String ocr = ocrTextResult.text();
+      if (!TextUtils.isEmpty(ocr)) {
+        ocr = ocr.trim();
+        if (stringBuilder.length() > 0) {
+          stringBuilder.append(", ");
+        }
+        stringBuilder.append(ocr);
+      }
     }
-    return TextUtils.isEmpty(stringBuilder)
-        ? ""
-        : context.getString(R.string.detected_result, stringBuilder);
+    if (stringBuilder.length() == 0 && !Result.isEmpty(imageDescriptionResult)) {
+      String desc = imageDescriptionResult.text();
+      if (!TextUtils.isEmpty(desc)) {
+        stringBuilder.append(desc.trim());
+      }
+    }
+    return stringBuilder.toString();
   }
 
   private static String constructImageDescriptionText(

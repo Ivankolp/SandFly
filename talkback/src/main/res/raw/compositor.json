@@ -44,7 +44,7 @@
             "then": {
               "fallback": [
                 "$event.description",
-                "@string/value_unlabelled"
+                ""
               ]
             },
             "else": {
@@ -639,7 +639,7 @@
         "$node.stateDescription",
         {
           "if": "!$node.textOrLabelOrId",
-          "then": "@string/value_unlabelled"
+          "then": ""
         }
       ]
     },

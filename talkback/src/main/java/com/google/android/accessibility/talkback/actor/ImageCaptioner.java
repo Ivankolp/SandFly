@@ -64,6 +64,7 @@ import static com.google.android.accessibility.talkback.utils.FocusIndicatorUtil
 import static com.google.android.accessibility.utils.Performance.EVENT_ID_UNTRACKED;
 import static com.google.android.accessibility.utils.output.FeedbackItem.FLAG_FORCE_FEEDBACK;
 import static com.google.android.accessibility.utils.output.FeedbackItem.FLAG_NO_DEVICE_SLEEP;
+import static com.google.android.accessibility.utils.output.SpeechController.QUEUE_MODE_QUEUE;
 import static com.google.android.accessibility.utils.output.SpeechController.QUEUE_MODE_UNINTERRUPTIBLE_BY_NEW_SPEECH_CAN_IGNORE_INTERRUPTS;
 
 import android.Manifest;
@@ -2467,11 +2468,11 @@ public class ImageCaptioner extends Handler
                 service, imageDescriptionResult, iconLabelResult, ocrTextResult)
             : constructCaptionTextForAuto(
                 service, imageDescriptionResult, iconLabelResult, ocrTextResult);
-    returnFeedback(result);
+    returnFeedback(result, isUserRequested);
   }
 
   private void returnFeedback(@StringRes int text) {
-    returnFeedback(service.getString(text));
+    returnFeedback(service.getString(text), /* isUserRequested= */ true);
   }
 
   /**
@@ -2479,10 +2480,17 @@ public class ImageCaptioner extends Handler
    * recognition, and microphone recording.
    */
   private void returnFeedback(CharSequence text) {
+    returnFeedback(text, /* isUserRequested= */ true);
+  }
+
+  private void returnFeedback(CharSequence text, boolean isUserRequested) {
+    SpeakOptions options =
+        isUserRequested
+            ? SpeakOptions.create().setFlags(FLAG_FORCE_FEEDBACK | FLAG_NO_DEVICE_SLEEP)
+            : SpeakOptions.create().setQueueMode(QUEUE_MODE_QUEUE).setFlags(FLAG_NO_DEVICE_SLEEP);
     pipeline.returnFeedback(
         EVENT_ID_UNTRACKED,
-        Feedback.speech(
-            text, SpeakOptions.create().setFlags(FLAG_FORCE_FEEDBACK | FLAG_NO_DEVICE_SLEEP)));
+        Feedback.speech(text, options));
   }
 
   /** Sends a message to handle results timeout. */
