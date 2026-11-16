@@ -33,10 +33,10 @@ import org.checkerframework.checker.nullness.qual.Nullable;
 public class ScrollPositionInterpreter implements ScrollEventHandler {
 
   /** Delay before sending a scroll position notification for non-viewpager node. */
-  private static final long DELAY_SCROLL_FEEDBACK = 100;
+  private static final long DELAY_SCROLL_FEEDBACK = 1000;
 
   /** Delay before sending a scroll position notification for viewpager. */
-  private static final long DELAY_PAGE_FEEDBACK = 100;
+  private static final long DELAY_PAGE_FEEDBACK = 500;
 
   ////////////////////////////////////////////////////////////////////////////////////////////////
   // Member variables

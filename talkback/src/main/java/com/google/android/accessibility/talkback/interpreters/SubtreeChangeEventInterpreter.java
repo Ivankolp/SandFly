@@ -50,7 +50,7 @@ public class SubtreeChangeEventInterpreter
    * The value should be longer than ViewConfiguration#getSendRecurringAccessibilityEventsInterval
    * (100ms) because system might delay 100ms to aggregate multiple events.
    */
-  static final int SHORT_SUBTREE_CHANGED_DELAY_MS = 20;
+  static final int SHORT_SUBTREE_CHANGED_DELAY_MS = 150;
   /**
    * The long delay of interpreting subtree changed events. For wear devices, they have multiple
    * attempts for auto scrolling. Ideally, CONTENT_CHANGE_TYPE_SUBTREE and TYPE_VIEW_SCROLLED are
@@ -59,7 +59,7 @@ public class SubtreeChangeEventInterpreter
    * spend more times (~350ms) on calculating whether it needs to perform auto-scrolling one more
    * time and performing scrolling action. It is an experimental value and feel free to change it.
    */
-  static final int LONG_SUBTREE_CHANGED_DELAY_MS = 50;
+  static final int LONG_SUBTREE_CHANGED_DELAY_MS = 350;
 
   private int subtreeChangedDelayMs = SHORT_SUBTREE_CHANGED_DELAY_MS;
 
