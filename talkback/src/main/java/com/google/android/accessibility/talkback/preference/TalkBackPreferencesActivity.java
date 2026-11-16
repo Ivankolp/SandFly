@@ -63,7 +63,6 @@ public class TalkBackPreferencesActivity extends PreferencesActivity
 
   @Override
   protected void onCreate(@Nullable Bundle savedInstanceState) {
-    androidx.appcompat.app.AppCompatDelegate.setDefaultNightMode(androidx.appcompat.app.AppCompatDelegate.MODE_NIGHT_YES);
     // Must be called before super.onCreate
     assignSearchFragment(getIntent());
     fillDefaultFragmentNameIfNecessary();

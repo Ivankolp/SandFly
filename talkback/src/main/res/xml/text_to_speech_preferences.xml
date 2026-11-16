@@ -7,13 +7,6 @@
         android:defaultValue=""
         android:key="@string/pref_tts_engine_key"
         android:title="@string/title_pref_tts_engine" />
-    <com.google.android.accessibility.material.preference.AccessibilitySuiteListPreference
-        android:defaultValue="accessibility"
-        android:key="@string/pref_speech_stream_key"
-        android:title="@string/title_pref_speech_stream_control"
-        android:entries="@array/pref_speech_stream_entries"
-        android:entryValues="@array/pref_speech_stream_values"
-        android:summary="%s" />
     <com.google.android.accessibility.material.preference.AccessibilitySuitePreference
         android:fragment="com.google.android.accessibility.talkback.preference.base.VoiceProfilesFragment"
         android:key="@string/pref_voice_profiles_screen_key"
@@ -50,16 +43,6 @@
         android:key="@string/pref_system_tts_settings_key"
         android:title="@string/title_pref_system_tts_settings"
         android:summary="@string/summary_tts_settings" />
-    <com.google.android.accessibility.material.preference.AccessibilitySuitePreference
-        android:fragment="com.google.android.accessibility.talkback.preference.base.VerbosityPrefFragment"
-        android:key="@string/pref_verbosity_key"
-        android:title="@string/pref_verbosity_title"
-        android:summary="Подробность чтения элементов и подсказок" />
-    <com.google.android.accessibility.material.preference.AccessibilitySuitePreference
-        android:fragment="com.google.android.accessibility.talkback.preference.base.AudioOutputFragment"
-        android:key="pref_audio_output_screen"
-        android:title="@string/title_pref_audio_output"
-        android:summary="Вывод звука на динамик и внешние устройства" />
   </com.google.android.accessibility.material.preference.AccessibilitySuitePreferenceCategory>
   <com.google.android.accessibility.material.preference.AccessibilitySuitePreferenceCategory
       android:key="pref_speech_category_languages"

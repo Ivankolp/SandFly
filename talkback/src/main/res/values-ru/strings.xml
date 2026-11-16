@@ -2177,6 +2177,4 @@
         <item quantity="many">Скопировано <xliff:g id="count" example="5">%1$d</xliff:g> объектов</item>
         <item quantity="other">Скопировано <xliff:g id="count" example="5">%1$d</xliff:g> объекта</item>
     </plurals>
-  <string name="title_pref_category_tools">Умные функции и инструменты</string>
-  <string name="title_pref_category_system">Система и профили</string>
 </resources>
