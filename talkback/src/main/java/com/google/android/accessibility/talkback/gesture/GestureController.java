@@ -395,6 +395,12 @@ public class GestureController {
     } else if (action.equals(service.getString(R.string.shortcut_value_unassigned))) {
       // Do Nothing
     } else if (action.equals(service.getString(R.string.shortcut_value_previous))) {
+      KeyComboManager keyComboManager = service.getKeyComboManager();
+      ScreenReview screenReview = keyComboManager != null ? keyComboManager.getScreenReview() : null;
+      if (screenReview != null && screenReview.isCursorOn()) {
+        result = screenReview.perform(TalkBackPhysicalKeyboardShortcut.REVIEW_PREVIOUS_LINE);
+        return;
+      }
       result =
           pipeline.returnFeedback(
               eventId,
@@ -407,6 +413,12 @@ public class GestureController {
                   .setScroll(true)
                   .setWrap(true));
     } else if (action.equals(service.getString(R.string.shortcut_value_next))) {
+      KeyComboManager keyComboManager = service.getKeyComboManager();
+      ScreenReview screenReview = keyComboManager != null ? keyComboManager.getScreenReview() : null;
+      if (screenReview != null && screenReview.isCursorOn()) {
+        result = screenReview.perform(TalkBackPhysicalKeyboardShortcut.REVIEW_NEXT_LINE);
+        return;
+      }
       result =
           pipeline.returnFeedback(
               eventId,
@@ -747,6 +759,12 @@ public class GestureController {
       Performance.getInstance().displayAllEventStats();
     } else if (action.equals(
         service.getString(R.string.shortcut_value_perform_long_click_action))) {
+      KeyComboManager keyComboManager = service.getKeyComboManager();
+      ScreenReview screenReview = keyComboManager != null ? keyComboManager.getScreenReview() : null;
+      if (screenReview != null && screenReview.isCursorOn()) {
+        result = screenReview.perform(TalkBackPhysicalKeyboardShortcut.REVIEW_LONG_CLICK);
+        return;
+      }
       result = pipeline.returnFeedback(eventId, Feedback.focus(LONG_CLICK_CURRENT));
     } else if (action.equals(service.getString(R.string.shortcut_value_touch_click_action))) {
       result = pipeline.returnFeedback(eventId, Feedback.focus(TOUCH_CLICK_CURRENT));
@@ -765,6 +783,12 @@ public class GestureController {
     } else if (action.equals(
             service.getString(R.string.shortcut_value_action_setting_activate_current_action))
         || action.equals(service.getString(R.string.shortcut_value_perform_click_action))) {
+      KeyComboManager keyComboManager = service.getKeyComboManager();
+      ScreenReview screenReview = keyComboManager != null ? keyComboManager.getScreenReview() : null;
+      if (screenReview != null && screenReview.isCursorOn()) {
+        result = screenReview.perform(TalkBackPhysicalKeyboardShortcut.REVIEW_CLICK);
+        return;
+      }
       // For customized gesture(s) which perform the "Activate"/click action, they are regarded
       // the same behavior as the native "Double-Tap" gesture.
       if (selectorController.activateDoubleTapSetting()) {

@@ -101,20 +101,24 @@ class ScreenReview(
 
   private var tapping = false
 
+  val isRecognized: Boolean
+    get() = recognized
+
+  private val autoDetectRunnable = Runnable { checkInaccessibleWindow() }
+
   fun onAccessibilityEvent(event: AccessibilityEvent) {
     when (event.eventType) {
       AccessibilityEvent.TYPE_VIEW_ACCESSIBILITY_FOCUSED ->
         if (!tapping && !isCursorOn) startAtFocus = true
       AccessibilityEvent.TYPE_WINDOW_STATE_CHANGED -> {
         stale = true
-        // Recognized text belongs to the app it was recognized in, which a keyboard or a dialog
-        // of its own doesn't leave.
-        if (
-          recognized &&
-            event.packageName != service.packageName &&
-            service.rootInActiveWindow?.packageName?.let { it != recognizedPackage } == true
-        ) {
-          closeRecognizedText(announce = true)
+        val activePkg = service.rootInActiveWindow?.packageName?.toString() ?: event.packageName?.toString()
+        if (activePkg != null && activePkg != service.packageName && !isSystemPackage(activePkg)) {
+          if (recognized && activePkg != recognizedPackage?.toString()) {
+            closeRecognizedText(announce = false)
+          }
+          handler.removeCallbacks(autoDetectRunnable)
+          handler.postDelayed(autoDetectRunnable, AUTO_DETECT_DELAY_MS)
         }
       }
       AccessibilityEvent.TYPE_WINDOW_CONTENT_CHANGED,
@@ -124,6 +128,26 @@ class ScreenReview(
         lastFrameHash = 0L
         cachedReviewText = null
       }
+    }
+  }
+
+  private fun isSystemPackage(pkg: String): Boolean =
+    pkg == service.packageName ||
+      pkg == "android" ||
+      pkg.contains("systemui") ||
+      pkg.contains("launcher") ||
+      pkg.contains("inputmethod")
+
+  private fun checkInaccessibleWindow() {
+    if (recognized && isCursorOn) return
+    val activeRoot = service.rootInActiveWindow ?: return
+    val pkg = activeRoot.packageName?.toString() ?: return
+    if (isSystemPackage(pkg)) return
+
+    val items = screenItems()
+    if (items.isEmpty()) {
+      LogUtils.i(TAG, "Inaccessible window detected for $pkg (0 text items). Starting auto review.")
+      recognizeScreenText(auto = true)
     }
   }
 
@@ -444,8 +468,10 @@ class ScreenReview(
         )
       }
     stale = true
-    if (recognized) closeRecognizedText(announce = false)
     if (target != null && target.performAction(action)) {
+      if (recognized) {
+        handler.postDelayed({ if (recognized) capture(retries = 1, isRescan = true) }, RESCAN_WAIT_MS)
+      }
       return
     }
     tap(word.centerX, word.centerY, long)
@@ -488,6 +514,9 @@ class ScreenReview(
   private fun afterTap() {
     pipeline.returnFeedback(EVENT_ID_UNTRACKED, Feedback.passThroughMode(LOCK_PASS_THROUGH, null))
     handler.postDelayed({ tapping = false }, PASS_THROUGH_WAIT_MS)
+    if (recognized) {
+      handler.postDelayed({ if (recognized) capture(retries = 1, isRescan = true) }, RESCAN_WAIT_MS)
+    }
   }
 
   private fun setCursorOn(on: Boolean, announce: Boolean = true) {
@@ -526,16 +555,18 @@ class ScreenReview(
   /**
    * Recognizes the text in a screenshot and reviews it with the review cursor, from its first line.
    */
-  private fun recognizeScreenText() {
+  fun recognizeScreenText(auto: Boolean = false) {
     if (Build.VERSION.SDK_INT < Build.VERSION_CODES.R) {
-      speak(service.getString(R.string.recognize_screen_text_failed))
+      if (!auto) speak(service.getString(R.string.recognize_screen_text_failed))
       return
     }
-    speak(service.getString(R.string.recognize_screen_text_started))
-    capture(retries = 2)
+    if (!auto) {
+      speak(service.getString(R.string.recognize_screen_text_started))
+    }
+    capture(retries = 2, isRescan = false, auto = auto)
   }
 
-  private fun capture(retries: Int) {
+  private fun capture(retries: Int, isRescan: Boolean = false, auto: Boolean = false) {
     if (Build.VERSION.SDK_INT < Build.VERSION_CODES.R) return
     service.takeScreenshot(
       Display.DEFAULT_DISPLAY,
@@ -562,19 +593,23 @@ class ScreenReview(
               buffer.close()
             }
           if (bitmap == null) {
-            speak(service.getString(R.string.recognize_screen_text_failed))
+            if (!isRescan && !auto) {
+              speak(service.getString(R.string.recognize_screen_text_failed))
+            }
             return
           }
-          recognize(bitmap)
+          recognize(bitmap, isRescan, auto)
         }
 
         override fun onFailure(errorCode: Int) {
           // Android allows only a few screenshots a second.
           if (errorCode == AccessibilityService.ERROR_TAKE_SCREENSHOT_INTERVAL_TIME_SHORT && retries > 0) {
-            handler.postDelayed({ capture(retries - 1) }, SCREENSHOT_RETRY_MS)
+            handler.postDelayed({ capture(retries - 1, isRescan, auto) }, SCREENSHOT_RETRY_MS)
           } else {
             LogUtils.w(TAG, "Screenshot failed: %d", errorCode)
-            speak(service.getString(R.string.recognize_screen_text_failed))
+            if (!isRescan && !auto) {
+              speak(service.getString(R.string.recognize_screen_text_failed))
+            }
           }
         }
       },
@@ -603,16 +638,19 @@ class ScreenReview(
     return java.lang.Long.bitCount(h1 xor h2)
   }
 
-  private fun recognize(bitmap: Bitmap) {
+  private fun recognize(bitmap: Bitmap, isRescan: Boolean = false, auto: Boolean = false) {
     val frameHash = try { computeDHash(bitmap) } catch (e: Throwable) { 0L }
     val cached = cachedReviewText
     if (frameHash != 0L && cached != null && hammingDistance(frameHash, lastFrameHash) <= 2 && !cached.isEmpty) {
+      bitmap.recycle()
+      if (isRescan) {
+        return
+      }
       cursor = ReviewCursor(cached)
       recognized = true
       recognizedPackage = service.rootInActiveWindow?.packageName
       isCursorOn = true
       speak(cursor!!, Spoken.LINE)
-      bitmap.recycle()
       return
     }
 
@@ -622,17 +660,18 @@ class ScreenReview(
       .addOnSuccessListener { result ->
         val items =
           result.textBlocks.flatMap { block ->
-            block.lines.flatMap { line ->
-              line.elements.mapNotNull { element ->
-                val box = element.boundingBox ?: return@mapNotNull null
-                val fixed = com.google.android.accessibility.utils.ocr.CyrillicOcrFixer.fix(element.text)
-                ReviewItem(fixed, box.left, box.top, box.right, box.bottom)
-              }
+            block.lines.mapNotNull { line ->
+              val box = line.boundingBox ?: return@mapNotNull null
+              val text = line.text.trim()
+              if (text.isEmpty()) null
+              else ReviewItem(text, box.left, box.top, box.right, box.bottom)
             }
           }
         val text = ReviewText(items)
         if (text.isEmpty) {
-          speak(service.getString(R.string.recognize_screen_text_none))
+          if (!isRescan && !auto) {
+            speak(service.getString(R.string.recognize_screen_text_none))
+          }
           return@addOnSuccessListener
         }
         lastFrameHash = frameHash
@@ -645,6 +684,7 @@ class ScreenReview(
       }
       .addOnFailureListener { e ->
         LogUtils.w(TAG, "Text recognition failed: %s", e)
+        if (isRescan || auto) return@addOnFailureListener
         // Google Play services installs the recognizer when an app first needs it.
         if (LanguageTextRecognizer.isUnavailable(e)) {
           recognizer
@@ -664,6 +704,8 @@ class ScreenReview(
     const val MAX_DEPTH = 60
     const val PASS_THROUGH_WAIT_MS = 350L
     const val SCREENSHOT_RETRY_MS = 400L
+    const val AUTO_DETECT_DELAY_MS = 600L
+    const val RESCAN_WAIT_MS = 450L
     const val REREAD_MS = 500L
 
     // Kept in speech history, so that the last line read can be copied.
