@@ -821,8 +821,8 @@ public class GestureController {
       pipeline.returnFeedback(eventId, Feedback.speech(Feedback.Speech.Action.PAUSE_OR_RESUME));
     } else if (action.equals(service.getString(R.string.shortcut_value_recognize_screen_text))) {
       KeyComboManager keyComboManager = service.getKeyComboManager();
-      if (keyComboManager != null && keyComboManager.getKeyComboMapper() != null) {
-        ScreenReview screenReview = keyComboManager.getKeyComboMapper().getScreenReview();
+      if (keyComboManager != null) {
+        ScreenReview screenReview = keyComboManager.getScreenReview();
         if (screenReview != null) {
           result = screenReview.perform(TalkBackPhysicalKeyboardShortcut.RECOGNIZE_SCREEN_TEXT);
         }
